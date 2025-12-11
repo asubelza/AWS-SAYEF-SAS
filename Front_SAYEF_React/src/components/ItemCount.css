@@ -1,0 +1,26 @@
+
+.item-count-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+  }
+  
+  .counter-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* separa botones y número */
+    background-color: #222; /* fondo oscuro */
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+  }
+  
+  .counter-value {
+    font-size: 1.8rem;       /* tamaño más grande */
+    font-weight: 700;
+    color: #eee;             /* color claro para contraste en fondo oscuro */
+    min-width: 40px;
+    text-align: center;
+    user-select: none;       /* que no se pueda seleccionar el número */
+  }
+  

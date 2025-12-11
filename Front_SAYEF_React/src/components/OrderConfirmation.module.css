@@ -1,0 +1,87 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.card {
+  background: radial-gradient(circle at top left, rgba(0, 224, 255, 0.15), transparent 50%),
+    radial-gradient(circle at bottom right, rgba(18, 181, 255, 0.08), transparent 60%),
+    var(--bg-elevated);
+  padding: 2rem 2.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  animation: fadeIn 0.45s ease-out forwards;
+}
+
+.icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+  animation: pulse 1.4s infinite ease-in-out;
+}
+
+.title {
+  font-size: 1.8rem;
+  margin: 0.4rem 0;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  margin: 0;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.orderId {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.07em;
+  margin-bottom: 1rem;
+}
+
+.info {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* Animaciones */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+}

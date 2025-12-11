@@ -1,0 +1,98 @@
+import express from 'express';
+import dotenv from 'dotenv';
+import passport from './middlewares/jwtStrategy.js';
+import cors from 'cors';
+
+
+import mocksRouter from './routes/mocks.router.js';
+import productRouter from './routes/product.router.js';
+import cartRouter from './routes/cart.router.js';
+import userRouter from './routes/users.router.js';
+import viewsRouter from './routes/views.router.js';
+import sessionRouter from './routes/sessions.router.js';
+import orderRouter from "./routes/order.router.js";
+
+import { __dirname } from './utils/constantUtil.js';
+import { swaggerUi, specs } from "./config/swagger.config.js";
+
+import { logger } from "./config/logger.js";
+import { createDefaultAdmin } from "./config/createDefaultAdmin.js";
+
+
+
+// ========================================================
+// ** Inicializar un user administrador admin-admin **
+// ========================================================
+async function init() {
+  await createDefaultAdmin();  // 👈 Se ejecuta al inicio
+}
+
+init();
+
+dotenv.config();
+
+const app = express();
+
+// ========================================================
+// 🟦 HTTP LOGGER (Winston)
+// ========================================================
+app.use((req, res, next) => {
+  logger.http(`${req.method} ${req.url}`);
+  next();
+});
+
+
+// ========================================================
+// 🟦 CORS para permitir requests desde el FRONT (5173)
+// ========================================================
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true, // si usás cookies / sesiones
+}));
+
+// ========================================================
+// 🟦 Middlewares básicos
+// ========================================================
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+
+// Passport
+app.use(passport.initialize());
+
+// ========================================================
+// 🟦 Endpoint base
+// ========================================================
+app.get('/', (req, res) => {
+  logger.info("Endpoint raíz accedido");
+  res.send('Servidor funcionando ✔️');
+});
+
+// Ruta protegida
+app.get(
+  '/protected',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    logger.info(`Usuario accedió a /protected: ${req.user?.email}`);
+    res.send(`Ruta protegida. Usuario: ${req.user?.email || 'desconocido'}`);
+  }
+);
+
+// ========================================================
+// 🟦 Swagger
+// ========================================================
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(specs));
+
+
+// ========================================================
+// 🟦 Routers
+// ========================================================
+app.use("/api/mocks", mocksRouter);
+app.use("/api/products", productRouter);
+app.use("/api/carts", cartRouter);
+app.use("/api/users", userRouter);      // <<<<<< PARA DOCUMENTAR
+app.use("/api/sessions", sessionRouter);
+app.use("/api/orders", orderRouter);
+app.use("/", viewsRouter);
+
+export default app;

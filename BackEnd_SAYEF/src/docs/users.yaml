@@ -1,0 +1,89 @@
+tags:
+  - name: Users
+    description: Endpoints de usuarios y autenticación
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "67b12f8aacb3c82291f22db3"
+        first_name:
+          type: string
+          example: "Juan"
+        last_name:
+          type: string
+          example: "Pérez"
+        email:
+          type: string
+          example: "juan@example.com"
+        role:
+          type: string
+          example: "user"
+    RegisterUser:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - email
+        - password
+      properties:
+        first_name:
+          type: string
+          example: "Juan"
+        last_name:
+          type: string
+          example: "Perez"
+        email:
+          type: string
+          example: "juan@example.com"
+        password:
+          type: string
+          example: "123456"
+    LoginUser:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: "juan@example.com"
+        password:
+          type: string
+          example: "123456"
+
+paths:
+  /api/users/register:
+    post:
+      summary: Registrar un nuevo usuario
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUser'
+      responses:
+        "201":
+          description: Usuario registrado correctamente
+        "400":
+          description: Error en datos enviados
+  /api/users/login:
+    post:
+      summary: Login de usuario
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUser'
+      responses:
+        "200":
+          description: Login correcto
+        "401":
+          description: Credenciales inválidas
+  
