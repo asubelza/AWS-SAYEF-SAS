@@ -20,14 +20,9 @@ import './index.css'
 
 const App = () => {
   const [loading, setLoading] = useState(true)
-  const [elementos, setElementos] = useState([])
 
   useEffect(() => {
-    // Si este "loading" era solo de prueba, después lo podés sacar tranquilo
-    setTimeout(() => {
-      setElementos(["Producto1","Producto2","Producto3","Producto4","Producto5"])
-      setLoading(false)
-    }, 5000)
+    setLoading(false)
   },[]) 
 
   if (loading) {

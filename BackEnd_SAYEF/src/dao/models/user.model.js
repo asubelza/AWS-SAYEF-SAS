@@ -5,7 +5,9 @@ import bcrypt from 'bcrypt';
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, default: 'user' } // puedes usar 'admin' o 'user'
+  first_name: { type: String, default: '' },
+  last_name: { type: String, default: '' },
+  role: { type: String, default: 'user', index: true }
 });
 
 /*// Middleware para encriptar la contraseña antes de guardar
