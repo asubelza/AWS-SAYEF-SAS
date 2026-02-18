@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        'electric': {
+        electric: {
           50: '#e6fcff',
           100: '#b3f5ff',
           200: '#80eeff',
@@ -19,7 +19,7 @@ export default {
           800: '#00505c',
           900: '#00242e',
         },
-        'dark': {
+        dark: {
           50: '#f5f7fb',
           100: '#e2e6ef',
           200: '#c9d1df',
@@ -31,9 +31,6 @@ export default {
           800: '#02030a',
           900: '#010205',
         }
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',
