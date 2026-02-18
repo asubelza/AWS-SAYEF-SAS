@@ -72,28 +72,25 @@ const ItemListContainer = () => {
 
   if (loading) {
     return (
-      <div
-        className="flex justify-content-center align-items-center"
-        style={{ height: "400px" }}
-      >
-        <ProgressSpinner />
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-electric-400"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div
-        className="flex justify-content-center align-items-center"
-        style={{ height: "400px" }}
-      >
-        <p className="text-red-500">{error}</p>
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <p className="text-red-400 text-lg mb-2">Error al cargar los productos</p>
+          <p className="text-dark-400 text-sm">{error}</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="animate-fade-in">
       <ItemList products={products} />
     </div>
   );

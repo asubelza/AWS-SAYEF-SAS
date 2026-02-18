@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* index.css: estilos globales */
 
 :root {
@@ -14,6 +18,234 @@
   --radius-md: 10px;
   --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.45);
   --transition-fast: 0.18s ease-out;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", Roboto, sans-serif;
+  background: radial-gradient(circle at top, #151b3a 0, #050816 40%, #02030a 100%);
+  color: var(--text-main);
+}
+
+/* Layout general */
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2.5rem;
+}
+
+/* Títulos / textos */
+
+h1, h2, h3 {
+  margin: 0 0 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 3vw, 2.3rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 2.3vw, 1.9rem);
+}
+
+p {
+  margin: 0 0 0.5rem;
+  color: var(--text-muted);
+}
+
+/* Botones genéricos */
+
+.button,
+button {
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: #02030a;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+    background var(--transition-fast), opacity var(--transition-fast);
+  box-shadow: 0 10px 25px rgba(0, 224, 255, 0.25);
+}
+
+button:hover,
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 35px rgba(0, 224, 255, 0.35);
+}
+
+button:active,
+.button:active {
+  transform: translateY(0);
+  box-shadow: 0 10px 20px rgba(0, 224, 255, 0.28);
+}
+
+button.secondary {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  box-shadow: none;
+}
+
+/* Tarjetas genéricas */
+
+.card {
+  background: radial-gradient(circle at top left, rgba(0, 224, 255, 0.15), transparent 45%),
+    radial-gradient(circle at bottom right, rgba(18, 181, 255, 0.08), transparent 50%),
+    var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: 1rem 1.1rem;
+}
+
+/* Grilla de productos */
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+/* Auth / formularios comunes */
+
+.auth-container,
+.profile-container,
+.admin-container {
+  max-width: 460px;
+  margin: 1.7rem auto;
+}
+
+.auth-form,
+.admin-form {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.2rem 1.25rem;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+}
+
+.auth-form input,
+.admin-form input {
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: #050816;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+.auth-form input:focus,
+.admin-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(0, 224, 255, 0.4);
+}
+
+/* Textos de ayuda debajo de formularios */
+
+.auth-container p,
+.profile-container p {
+  text-align: center;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+}
+
+/* Links genéricos */
+
+a {
+  text-decoration: none;
+  color: var(--accent-strong);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Badge oferta */
+
+.badge-offer {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 196, 0, 0.12);
+  color: #ffd95a;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Toastify custom para tema eléctrico */
+
+.Toastify__toast-theme--dark {
+  background: #050816;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 224, 255, 0.18);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+}
+
+.Toastify__toast-theme--dark .Toastify__toast-body {
+  color: #f5f7fb;
+  font-size: 0.9rem;
+}
+
+.Toastify__progress-bar--dark {
+  background: linear-gradient(90deg, #00e0ff, #12b5ff);
+}
+
+/* @layer components para Tailwind */
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-2.5 rounded-full bg-gradient-to-r from-electric-400 to-electric-500 text-dark-800 font-semibold shadow-lg shadow-electric-500/25 hover:shadow-electric-500/40 hover:-translate-y-0.5 transition-all duration-200;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-2.5 rounded-full border border-dark-300/20 text-dark-100 hover:border-electric-400/50 hover:text-electric-400 transition-all duration-200;
+  }
+  
+  .card-hover {
+    @apply bg-dark-600/80 backdrop-blur-sm border border-dark-300/10 rounded-2xl p-4 shadow-xl hover:shadow-2xl hover:border-electric-500/30 transition-all duration-300 hover:-translate-y-1;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl bg-dark-700 border border-dark-300/20 text-dark-100 placeholder-dark-400 focus:outline-none focus:border-electric-400 focus:ring-2 focus:ring-electric-400/20 transition-all duration-200;
+  }
+  
+  .glass-effect {
+    @apply bg-dark-600/50 backdrop-blur-md border border-white/5;
+  }
 }
 
 *,
