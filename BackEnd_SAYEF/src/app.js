@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import passport from './middlewares/jwtStrategy.js';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 
 
 import mocksRouter from './routes/mocks.router.js';
@@ -42,6 +43,16 @@ app.use(cors({
   origin: env.corsOrigin,
   credentials: true,
 }));
+
+// ========================================================
+// 🟦 Rate Limiting
+// ========================================================
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { status: 'error', message: 'Demasiadas solicitudes, intenta más tarde' }
+});
+app.use('/api/', limiter);
 
 // ========================================================
 // 🟦 HTTP LOGGER (Winston)
