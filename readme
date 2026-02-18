@@ -1,0 +1,269 @@
+# SAYEF Web Store (Full Stack)
+
+Proyecto e-commerce para SAYEF (productos eléctricos e insumos), con:
+- Backend Node.js + Express + MongoDB + JWT + Swagger
+- Frontend React (Vite) + PrimeReact
+- Roles: usuario / admin
+- Admin: CRUD productos + importación Excel
+- Usuario: login/registro + carrito + órdenes + perfil
+
+---
+
+## 🧱 Stack
+**Backend**
+- Node.js + Express
+- MongoDB + Mongoose
+- Passport JWT
+- Swagger docs
+- Winston logger
+
+**Frontend**
+- React + Vite
+- React Router
+- PrimeReact
+- Context API (Auth + Cart)
+
+---
+
+## ✅ Features
+### Usuarios
+- Registro / login con email
+- Login con Google (OAuth)
+- Perfil editable (nombre/apellido)
+- Ver mis órdenes
+- Cancelar orden (si está pending)
+
+### Productos
+- Listado
+- Filtro por categoría
+- Filtro ofertas
+- Detalle producto
+
+### Admin
+- Panel admin (solo role=admin)
+- Crear / editar / borrar productos
+- Importar productos desde Excel (`/api/products/import`)
+
+---
+
+## 🌐 Endpoints principales
+### Health
+- `GET /health` → estado del server + mongo
+
+### Users
+- `POST /api/users/register`
+- `POST /api/users/login`
+- `POST /api/users/google`
+- `GET /api/users/current`
+
+### Products
+- `GET /api/products`
+- `GET /api/products/:pid`
+- `POST /api/products` (admin)
+- `PUT /api/products/:pid` (admin)
+- `DELETE /api/products/:pid` (admin)
+- `POST /api/products/import` (admin, excel)
+
+### Orders
+- `POST /api/orders`
+- `GET /api/orders/me/list` (usuario logueado)
+- `PATCH /api/orders/:oid/cancel` (usuario logueado)
+
+---
+
+## ⚙️ Variables de entorno
+
+### Backend `.env`
+```env
+PORT=8080
+MONGO_URI=mongodb://mongo:27017/sayefdb
+JWT_SECRET=super_secret_key
+NODE_ENV=development
+
+# Google OAuth
+GOOGLE_CLIENT_ID=xxxxx.apps.googleusercontent.com
+Frontend .env
+env
+Copiar código
+VITE_API_URL=http://localhost:8080
+VITE_GOOGLE_CLIENT_ID=xxxxx.apps.googleusercontent.com
+▶️ Correr local
+Backend
+bash
+Copiar código
+cd BackEnd_SAYEF
+npm install
+npm run dev
+Frontend
+bash
+Copiar código
+cd FrontEnd_SAYEF
+npm install
+npm run dev
+🐳 Docker (si aplica)
+bash
+Copiar código
+docker compose up --build
+Healthcheck:
+
+GET http://localhost:8080/health
+
+📦 Importación Excel (admin)
+El Excel debe tener columnas:
+
+NOMBRE
+
+Descripcion
+
+CÓDIGO
+
+PRECIO
+
+Stock
+
+Categoria
+
+Oferta (S/N o TRUE/FALSE)
+
+El import hace upsert por code.
+
+🔐 Admin por defecto
+Se crea un admin por defecto si no existe:
+
+email: admin@sayef.com
+
+password: admin
+
+(Recomendado cambiarlo en producción)
+
+📚 Swagger
+Docs:
+
+GET /api/docs
+
+🧾 Logs (Winston)
+logs/errors.log
+
+logs/combined.log
+
+
+🐳 Uso de Docker
+
+Este proyecto está dockerizado para facilitar el desarrollo y la ejecución del sistema sin necesidad de instalar dependencias locales (Node, MongoDB, etc.).
+
+📦 Requisitos previos
+
+Antes de comenzar, asegurate de tener instalado:
+
+Docker
+
+Docker Compose
+
+Verificá con:
+
+docker --version
+docker compose version
+
+🏗 Estructura Docker (resumen)
+
+El proyecto utiliza:
+
+Backend: Node.js + Express
+
+Base de datos: MongoDB
+
+Frontend: React + Vite
+
+Nginx (opcional, para servir el front en producción)
+
+La orquestación se realiza mediante docker-compose.
+
+▶️ Levantar el proyecto con Docker
+
+Desde la raíz del proyecto, ejecutar:
+
+docker compose up --build
+
+
+Esto va a:
+
+Construir las imágenes
+
+Levantar los contenedores
+
+Exponer los servicios automáticamente
+
+🌐 Servicios disponibles
+Servicio	URL
+Backend API	http://localhost:8080
+
+Frontend	http://localhost:5173
+
+MongoDB	mongodb://localhost:27017
+🔁 Modo desarrollo (hot reload)
+
+Si estás trabajando en desarrollo:
+
+Los cambios en el backend se reflejan automáticamente si usás nodemon
+
+Los cambios en el frontend se reflejan gracias a Vite
+
+No es necesario reconstruir la imagen salvo que:
+
+Cambies dependencias (package.json)
+
+Cambies el Dockerfile
+
+🧹 Detener los contenedores
+docker compose down
+
+
+Para eliminar también volúmenes (⚠ borra datos de MongoDB):
+
+docker compose down -v
+
+🗄 Persistencia de datos
+
+MongoDB utiliza volúmenes Docker, por lo que:
+
+Los datos persisten entre reinicios del contenedor
+
+No se pierden al apagar Docker (salvo que uses -v)
+
+🔐 Variables de entorno
+
+Las variables sensibles se configuran mediante archivos .env.
+
+Ejemplo:
+
+PORT=8080
+MONGO_URL=mongodb://mongo:27017/sayefdb
+JWT_SECRET=supersecretkey
+GOOGLE_CLIENT_ID=xxxxxxxx
+
+
+⚠️ Nunca subir .env al repositorio
+
+🩺 Endpoint de salud (health check)
+
+El backend expone un endpoint para verificar el estado del servicio:
+
+GET /health
+
+
+Respuesta esperada:
+
+{
+  "status": "ok",
+  "uptime": 12345,
+  "timestamp": "2026-01-17T12:00:00Z"
+}
+
+
+Ideal para:
+
+Docker healthchecks
+
+Monitoreo
+
+Debug rápido

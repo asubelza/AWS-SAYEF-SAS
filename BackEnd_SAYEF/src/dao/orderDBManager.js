@@ -1,33 +1,36 @@
 import Order from "./models/order.model.js";
 
-class OrderDBManager {
-  async getOrders() {
-    return Order.find().lean();
-  }
-
-  async getOrderById(id) {
-    return Order.findById(id).lean();
-  }
-
-  async createOrder(data) {
+export default class OrderDBManager {
+  createOrder(data) {
     return Order.create(data);
   }
 
-  async deleteOrder(id) {
-    return Order.findByIdAndDelete(id);
+  getOrders() {
+    return Order.find().sort({ createdAt: -1 });
   }
 
-  // 🆕 Órdenes asociadas a un user o a su email
-  async getOrdersForUser(userId, email) {
-    const query = {
-      $or: [
-        ...(userId ? [{ user: userId }] : []),
-        ...(email ? [{ "buyer.email": email }] : []),
-      ],
-    };
+  getOrderById(id) {
+    return Order.findById(id);
+  }
 
-    return Order.find(query).sort({ createdAt: -1 }).lean();
+  deleteOrder(id) {
+    return Order.deleteOne({ _id: id });
+  }
+
+  findOrders(filter = {}, sort = { createdAt: -1 }) {
+    return Order.find(filter).sort(sort);
+  }
+
+  // anti-duplicado (60s)
+  findDuplicateRecentOrder(email, items, total) {
+    const now = new Date();
+    const oneMinuteAgo = new Date(now.getTime() - 60 * 1000);
+
+    return Order.findOne({
+      "buyer.email": email,
+      total,
+      createdAt: { $gte: oneMinuteAgo },
+      "items.0": { $exists: true },
+    });
   }
 }
-
-export default OrderDBManager;

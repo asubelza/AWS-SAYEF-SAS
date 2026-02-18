@@ -1,4 +1,3 @@
-// src/controllers/order.controller.js
 import OrderService from "../services/order.service.js";
 import UserService from "../services/user.service.js";
 
@@ -17,9 +16,7 @@ class OrderController {
         });
       }
 
-      // ------------------------------------------------------------
       // 🔗 Intentamos vincular la orden a un usuario existente
-      // ------------------------------------------------------------
       let userId = null;
       try {
         const user = await UserService.repository.getByEmail(buyer.email);
@@ -28,9 +25,7 @@ class OrderController {
         console.error("⚠ No se pudo vincular usuario a la orden:", err);
       }
 
-      // ------------------------------------------------------------
       // ⛔ Anti-duplicado: misma orden en los últimos 60 segundos
-      // ------------------------------------------------------------
       const duplicate = await OrderService.findDuplicateRecentOrder(
         buyer.email,
         items,
@@ -45,13 +40,11 @@ class OrderController {
         });
       }
 
-      // ------------------------------------------------------------
-      // 🏗 Armar payload de orden
-      // ------------------------------------------------------------
+      // 🏗 Payload
       const orderPayload = {
         buyer,
         items: items.map((it) => ({
-          productId: it.id || it._id || null,
+          productId: it.productId || it.id || it._id || null,
           title: it.title,
           price: it.price,
           quantity: it.quantity,
@@ -74,7 +67,7 @@ class OrderController {
   }
 
   // ============================================================
-  // 📄 Listar todas las órdenes (solo admin)
+  // 📄 Listar todas (admin en el router)
   // ============================================================
   async getAll(req, res, next) {
     try {
@@ -98,20 +91,24 @@ class OrderController {
   }
 
   // ============================================================
-  // ❌ Cancelar una orden
+  // ❌ Cancelar una orden (solo owner o admin, y solo si está pending)
   // ============================================================
   async cancel(req, res, next) {
-    try {
-      const { oid } = req.params;
-      const order = await OrderService.cancelOrder(oid);
-      res.json({ status: "success", payload: order });
-    } catch (error) {
-      next(error);
-    }
+  try {
+    const { oid } = req.params;
+    const userId = req.user?._id;
+    const role = req.user?.role;
+
+    const order = await OrderService.cancelOrder(oid, { userId, role });
+
+    return res.json({ status: "success", payload: order });
+  } catch (error) {
+    next(error);
   }
+}
 
   // ============================================================
-  // 🧹 Eliminar (solo admin)
+  // 🧹 Eliminar (admin en el router)
   // ============================================================
   async delete(req, res, next) {
     try {
@@ -123,7 +120,7 @@ class OrderController {
   }
 
   // ============================================================
-  // 👤 Obtener órdenes por usuario (admin)
+  // 👤 Órdenes por usuario (admin)
   // ============================================================
   async getByUser(req, res, next) {
     try {

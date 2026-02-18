@@ -11,6 +11,8 @@ import userRouter from './routes/users.router.js';
 import viewsRouter from './routes/views.router.js';
 import sessionRouter from './routes/sessions.router.js';
 import orderRouter from "./routes/order.router.js";
+import healthRouter from "./routes/health.router.js";
+
 
 import { __dirname } from './utils/constantUtil.js';
 import { swaggerUi, specs } from "./config/swagger.config.js";
@@ -94,5 +96,8 @@ app.use("/api/users", userRouter);      // <<<<<< PARA DOCUMENTAR
 app.use("/api/sessions", sessionRouter);
 app.use("/api/orders", orderRouter);
 app.use("/", viewsRouter);
+
+// 👇 health check
+app.use("/health", healthRouter);
 
 export default app;

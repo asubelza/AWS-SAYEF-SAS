@@ -1,0 +1,130 @@
+Issue Type,Summary,Description,Epic Name,Epic Link,Parent,Labels
+Epic,E0 - Setup & Arquitectura,"Base técnica del proyecto: repos, scripts, envs, DB, docker, estándares.",E0 - Setup & Arquitectura,,,sayef,setup
+Epic,E1 - Autenticación & Usuarios,"Login/registro, JWT, perfil, roles y guardas.",E1 - Autenticación & Usuarios,,,sayef,auth
+Epic,E2 - Catálogo & Productos,"Modelos, endpoints, UI catálogo, detalle, imágenes.",E2 - Catálogo & Productos,,,sayef,catalog
+Epic,E3 - Carrito & Checkout,"Carrito persistente, checkout, validaciones, resumen.",E3 - Carrito & Checkout,,,sayef,checkout
+Epic,E4 - Órdenes & Pagos,"Crear órdenes, estados, mis órdenes, pagos/webhooks.",E4 - Órdenes & Pagos,,,sayef,orders
+Epic,E5 - Admin Panel (Backoffice), "Panel admin: productos, categorías, órdenes, usuarios.",E5 - Admin Panel (Backoffice),,,sayef,admin
+Epic,E6 - Integraciones,"Pagos, emails, envíos, integraciones externas.",E6 - Integraciones,,,sayef,integrations
+Epic,E7 - QA, Seguridad, Deploy & Observabilidad,"Testing, hardening, deploy, logs/monitoring.",E7 - QA, Seguridad, Deploy & Observabilidad,,,sayef,devops
+
+Story,E0-S1 Inicializar repos y estructura,"Crear estructura base FRONT/BACK. Incluye scripts, lint/format, env example y README.",,E0 - Setup & Arquitectura,,sayef,setup
+Sub-task,E0-S1a Crear estructura carpetas,"Estructura /frontend y /backend (o monorepo), convenciones.",,,E0-S1 Inicializar repos y estructura,sayef
+Sub-task,E0-S1b Configurar ESLint/Prettier,"Estandarizar formato y lint en front y back.",,,E0-S1 Inicializar repos y estructura,sayef
+Sub-task,E0-S1c Configurar variables de entorno,"Crear .env.example + documentación.",,,E0-S1 Inicializar repos y estructura,sayef
+Sub-task,E0-S1d README setup,"Instrucciones: instalar, correr, envs, scripts.",,,E0-S1 Inicializar repos y estructura,sayef
+
+Story,E0-S2 Configurar DB + health,"Conectar MongoDB, mongoose y endpoint /health con chequeo DB.",,E0 - Setup & Arquitectura,,sayef,setup
+Sub-task,E0-S2a Configurar Mongoose,"Conexión, retries básicos, manejo de errores.",,,E0-S2 Configurar DB + health,sayef
+Sub-task,E0-S2b Endpoint /health,"Devuelve estado app y DB ok/fail.",,,E0-S2 Configurar DB + health,sayef
+Sub-task,E0-S2c Seed opcional,"Script seed para categorías y productos demo.",,,E0-S2 Configurar DB + health,sayef
+
+Story,E0-S3 Docker compose (opcional recomendado),"Levantar front/back/mongo por docker-compose.",,E0 - Setup & Arquitectura,,sayef,setup
+Sub-task,E0-S3a Dockerfile backend,"Build + run backend.",,,E0-S3 Docker compose (opcional recomendado),sayef
+Sub-task,E0-S3b Dockerfile frontend,"Build + serve front.",,,E0-S3 Docker compose (opcional recomendado),sayef
+Sub-task,E0-S3c docker-compose.yml,"Servicios: mongo, backend, frontend + volumes.",,,E0-S3 Docker compose (opcional recomendado),sayef
+
+Story,E1-S1 Registro/Login con JWT,"Auth base con JWT. Formularios en front y persistencia sesión.",,E1 - Autenticación & Usuarios,,sayef,auth
+Sub-task,E1-S1a Modelo User + bcrypt,"Schema user, hash y compare.",,,E1-S1 Registro/Login con JWT,sayef
+Sub-task,E1-S1b Endpoints /auth/register y /auth/login,"Validación y respuestas estándar.",,,E1-S1 Registro/Login con JWT,sayef
+Sub-task,E1-S1c Middleware auth JWT,"Verifica token y setea req.user.",,,E1-S1 Registro/Login con JWT,sayef
+Sub-task,E1-S1d Front: login/register + sesión,"Forms + guardar token + logout.",,,E1-S1 Registro/Login con JWT,sayef
+
+Story,E1-S2 Perfil usuario (ver/editar),"Pantalla perfil, endpoint /users/me GET/PUT.",,E1 - Autenticación & Usuarios,,sayef,auth
+Sub-task,E1-S2a Endpoint /users/me,"GET/PUT con validaciones.",,,E1-S2 Perfil usuario (ver/editar),sayef
+Sub-task,E1-S2b UI Perfil,"Editar first_name/last_name (y otros si aplican).",,,E1-S2 Perfil usuario (ver/editar),sayef
+
+Story,E1-S3 Roles (ADMIN/USER),"Roles y restricciones para panel admin.",,E1 - Autenticación & Usuarios,,sayef,auth
+Sub-task,E1-S3a Campo role + seed admin,"Role en User. Crear admin inicial.",,,E1-S3 Roles (ADMIN/USER),sayef
+Sub-task,E1-S3b Middleware requireAdmin,"Protege endpoints admin.",,,E1-S3 Roles (ADMIN/USER),sayef
+Sub-task,E1-S3c Guards frontend,"Rutas admin visibles solo para admin.",,,E1-S3 Roles (ADMIN/USER),sayef
+
+Story,E2-S1 Modelos Producto + Categoría,"Schemas, validaciones y CRUD backend.",,E2 - Catálogo & Productos,,sayef,catalog
+Sub-task,E2-S1a Schema Category,"Nombre, slug, activo.",,,E2-S1 Modelos Producto + Categoría,sayef
+Sub-task,E2-S1b Schema Product,"Nombre, sku, precio, stock, desc, imgs[], categoryId, activo.",,,E2-S1 Modelos Producto + Categoría,sayef
+Sub-task,E2-S1c CRUD endpoints,"GET list/detail + POST/PUT/PATCH/DELETE (admin).",,,E2-S1 Modelos Producto + Categoría,sayef
+
+Story,E2-S2 Listado productos (Front),"Catálogo con búsqueda, filtros, loading y empty state.",,E2 - Catálogo & Productos,,sayef,catalog
+Sub-task,E2-S2a Página catálogo,"Ruta /shop (o /productos).",,,E2-S2 Listado productos (Front),sayef
+Sub-task,E2-S2b Component ProductCard,"Imagen, título, precio, CTA.",,,E2-S2 Listado productos (Front),sayef
+Sub-task,E2-S2c Filtros/búsqueda,"Query params + debounce opcional.",,,E2-S2 Listado productos (Front),sayef
+
+Story,E2-S3 Detalle producto,"Detalle con galería imágenes y agregar al carrito.",,E2 - Catálogo & Productos,,sayef,catalog
+Sub-task,E2-S3a Ruta detalle,"/product/:id o /producto/:slug.",,,E2-S3 Detalle producto,sayef
+Sub-task,E2-S3b UI imágenes + stock,"Mostrar stock y bloquear compra si no hay.",,,E2-S3 Detalle producto,sayef
+
+Story,E2-S4 Subida de imágenes (storage),"Admin sube imagen y se guarda URL en Product.",,E2 - Catálogo & Productos,,sayef,catalog
+Sub-task,E2-S4a Endpoint upload,"Multer + validar tipo/tamaño.",,,E2-S4 Subida de imágenes (storage),sayef
+Sub-task,E2-S4b Storage provider,"Local/S3/Cloudinary (según definas).",,,E2-S4 Subida de imágenes (storage),sayef
+Sub-task,E2-S4c Asociar a producto,"Guardar urls en schema y UI admin.",,,E2-S4 Subida de imágenes (storage),sayef
+
+Story,E3-S1 Carrito persistente,"Agregar/quitar/modificar cantidades. Persistir localStorage.",,E3 - Carrito & Checkout,,sayef,checkout
+Sub-task,E3-S1a Estado carrito (store/context),"Acciones add/remove/update/clear.",,,E3-S1 Carrito persistente,sayef
+Sub-task,E3-S1b UI carrito,"Tabla items + totales.",,,E3-S1 Carrito persistente,sayef
+Sub-task,E3-S1c Validación stock al confirmar,"Revalidar en checkout antes de orden.",,,E3-S1 Carrito persistente,sayef
+
+Story,E3-S2 Checkout (datos envío + resumen),"Formulario envío + confirmación final.",,E3 - Carrito & Checkout,,sayef,checkout
+Sub-task,E3-S2a Form envío,"Validaciones campos obligatorios.",,,E3-S2 Checkout (datos envío + resumen),sayef
+Sub-task,E3-S2b Resumen final,"Totales, items, dirección, CTA confirmar.",,,E3-S2 Checkout (datos envío + resumen),sayef
+
+Story,E4-S1 Crear orden (backend) + descontar stock,"Crear Order, calcular totales y descontar stock controlado.",,E4 - Órdenes & Pagos,,sayef,orders
+Sub-task,E4-S1a Schema Order,"Items, totales, userId, shipping, status, payment.",,,E4-S1 Crear orden (backend) + descontar stock,sayef
+Sub-task,E4-S1b Endpoint POST /orders,"Crea orden y valida stock.",,,E4-S1 Crear orden (backend) + descontar stock,sayef
+Sub-task,E4-S1c Descuento stock seguro,"Evitar stock negativo (bulk update/transaction).",,,E4-S1 Crear orden (backend) + descontar stock,sayef
+
+Story,E4-S2 Mis órdenes (front + back),"Usuario ve listado y detalle de sus órdenes.",,E4 - Órdenes & Pagos,,sayef,orders
+Sub-task,E4-S2a GET /orders/my,"Lista paginada.",,,E4-S2 Mis órdenes (front + back),sayef
+Sub-task,E4-S2b UI Mis Órdenes,"Listado + detalle.",,,E4-S2 Mis órdenes (front + back),sayef
+
+Story,E4-S3 Estados de orden (admin),"Admin cambia estado. Auditoría básica.",,E4 - Órdenes & Pagos,,sayef,orders
+Sub-task,E4-S3a Endpoint PATCH status,"Validar transición de estados.",,,E4-S3 Estados de orden (admin),sayef
+Sub-task,E4-S3b Auditoría,"updatedAt/updatedBy.",,,E4-S3 Estados de orden (admin),sayef
+Sub-task,E4-S3c UI admin estados,"Selector estado + historial simple.",,,E4-S3 Estados de orden (admin),sayef
+
+Story,E5-S1 Layout Admin + rutas protegidas,"Dashboard admin con menú secciones.",,E5 - Admin Panel (Backoffice),,sayef,admin
+Sub-task,E5-S1a Layout + sidebar,"Estructura base.",,,E5-S1 Layout Admin + rutas protegidas,sayef
+Sub-task,E5-S1b Guards rutas,"Solo ADMIN.",,,E5-S1 Layout Admin + rutas protegidas,sayef
+
+Story,E5-S2 CRUD Productos (admin),"Alta/edición/desactivar, imágenes.",,E5 - Admin Panel (Backoffice),,sayef,admin
+Sub-task,E5-S2a Tabla productos,"Filtros + paginación.",,,E5-S2 CRUD Productos (admin),sayef
+Sub-task,E5-S2b Form producto,"Crear/editar con validaciones.",,,E5-S2 CRUD Productos (admin),sayef
+Sub-task,E5-S2c Toggle activo,"Activar/desactivar.",,,E5-S2 CRUD Productos (admin),sayef
+
+Story,E5-S3 CRUD Categorías (admin),"Gestión categorías con reglas.",,E5 - Admin Panel (Backoffice),,sayef,admin
+Sub-task,E5-S3a UI categorías,"Crear/editar/borrar.",,,E5-S3 CRUD Categorías (admin),sayef
+Sub-task,E5-S3b Restricción borrar,"No borrar si tiene productos.",,,E5-S3 CRUD Categorías (admin),sayef
+
+Story,E5-S4 Gestión órdenes (admin),"Listado, filtros y cambio estado.",,E5 - Admin Panel (Backoffice),,sayef,admin
+Sub-task,E5-S4a Tabla órdenes,"Filtros por estado/fecha.",,,E5-S4 Gestión órdenes (admin),sayef
+Sub-task,E5-S4b Detalle orden admin,"Items + datos envío + acciones.",,,E5-S4 Gestión órdenes (admin),sayef
+
+Story,E6-S1 Pagos (Mercado Pago u otro) + Webhook,"Checkout pago, preferencia y webhook actualiza estado a PAID.",,E6 - Integraciones,,sayef,payments
+Sub-task,E6-S1a Crear preferencia/checkout,"Endpoint back + front inicia pago.",,,E6-S1 Pagos (Mercado Pago u otro) + Webhook,sayef
+Sub-task,E6-S1b Webhook handler,"Verificar firma y mapear pago a orden.",,,E6-S1 Pagos (Mercado Pago u otro) + Webhook,sayef
+Sub-task,E6-S1c Update order status to PAID,"Actualizar orden y registrar paymentId.",,,E6-S1 Pagos (Mercado Pago u otro) + Webhook,sayef
+
+Story,E6-S2 Notificaciones email (opcional),"Email al crear orden y al cambiar estado.",,E6 - Integraciones,,sayef,integrations
+Sub-task,E6-S2a Servicio email,"SMTP/SendGrid.",,,E6-S2 Notificaciones email (opcional),sayef
+Sub-task,E6-S2b Templates,"Orden creada / orden actualizada.",,,E6-S2 Notificaciones email (opcional),sayef
+
+Story,E6-S3 Envíos (opcional),"Seleccionar método de envío / costo / tracking.",,E6 - Integraciones,,sayef,shipping
+Sub-task,E6-S3a Modelo shippingMethod,"Costo y descripción.",,,E6-S3 Envíos (opcional),sayef
+Sub-task,E6-S3b UI selección envío,"En checkout.",,,E6-S3 Envíos (opcional),sayef
+
+Story,E7-S1 Tests mínimos + Postman collection,"Colección Postman + tests básicos endpoints críticos.",,E7 - QA, Seguridad, Deploy & Observabilidad,,sayef,qa
+Sub-task,E7-S1a Postman collection,"auth/products/orders.",,,E7-S1 Tests mínimos + Postman collection,sayef
+Sub-task,E7-S1b Tests básicos,"smoke tests / supertest opcional.",,,E7-S1 Tests mínimos + Postman collection,sayef
+
+Story,E7-S2 Seguridad (hardening),"Helmet, CORS, rate limit, validación input.",,E7 - QA, Seguridad, Deploy & Observabilidad,,sayef,security
+Sub-task,E7-S2a Helmet + CORS,"Config seguro por ambiente.",,,E7-S2 Seguridad (hardening),sayef
+Sub-task,E7-S2b Rate limit auth,"Evitar brute force.",,,E7-S2 Seguridad (hardening),sayef
+Sub-task,E7-S2c Validación inputs,"zod/joi + sanitización.",,,E7-S2 Seguridad (hardening),sayef
+
+Story,E7-S3 Deploy staging/prod,"Deploy front/back con envs y healthchecks.",,E7 - QA, Seguridad, Deploy & Observabilidad,,sayef,devops
+Sub-task,E7-S3a Deploy front,"Vercel/Netlify.",,,E7-S3 Deploy staging/prod,sayef
+Sub-task,E7-S3b Deploy back,"Render/Fly/EC2.",,,E7-S3 Deploy staging/prod,sayef
+Sub-task,E7-S3c Documentación deploy,"Pasos y variables.",,,E7-S3 Deploy staging/prod,sayef
+
+Story,E7-S4 Observabilidad,"Logs estructurados + error handler global.",,E7 - QA, Seguridad, Deploy & Observabilidad,,sayef,devops
+Sub-task,E7-S4a Logger,"RequestId, levels.",,,E7-S4 Observabilidad,sayef
+Sub-task,E7-S4b Error handler,"Respuestas consistentes + captura.",,,E7-S4 Observabilidad,sayef

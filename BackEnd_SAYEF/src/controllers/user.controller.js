@@ -113,36 +113,26 @@ class UserController {
   }
 
   // 🆕 Actualizar datos del usuario logueado (perfil)
-  async updateMe(req, res, next) {
-    try {
-      const userId = req.user?._id;
-
-      if (!userId) {
-        return res.status(401).json({
-          status: "error",
-          message: "No autenticado",
-        });
-      }
-
-      // Solo permitimos actualizar algunos campos
-      const { first_name, last_name, email } = req.body;
-      const dataToUpdate = {};
-
-      if (typeof first_name === "string") dataToUpdate.first_name = first_name;
-      if (typeof last_name === "string") dataToUpdate.last_name = last_name;
-      if (typeof email === "string") dataToUpdate.email = email;
-
-      const updatedUser = await UserService.update(userId, dataToUpdate);
-      const safeUser = new UserDTO(updatedUser);
-
-      return res.json({
-        status: "success",
-        payload: safeUser,
-      });
-    } catch (error) {
-      next(error);
+ async updateMe(req, res, next) {
+  try {
+    const userId = req.user?._id;
+    if (!userId) {
+      return res.status(401).json({ status: "error", message: "No autenticado" });
     }
+
+    const { first_name, last_name } = req.body;
+
+    const updated = await UserService.update(userId, { first_name, last_name });
+
+    // si tu update devuelve "writeResult", volvemos a buscar el usuario
+    const fresh = await UserService.repository.getById(userId);
+    const safeUser = new UserDTO(fresh);
+
+    return res.json({ status: "success", payload: safeUser });
+  } catch (error) {
+    next(error);
   }
+}
 }
 
 export default new UserController();

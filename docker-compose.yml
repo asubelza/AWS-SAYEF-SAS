@@ -3,8 +3,6 @@ services:
     build: ./Front_SAYEF_React
     ports:
       - "5173:80"
-    depends_on:
-      - backend
 
   backend:
     build: ./BackEnd_SAYEF
@@ -14,6 +12,11 @@ services:
       - .env
     depends_on:
       - mongo
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8080/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   mongo:
     image: mongo:7

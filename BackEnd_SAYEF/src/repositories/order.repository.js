@@ -1,15 +1,31 @@
-import Order from "../models/Order.model.js";
+import OrderDBManager from "../dao/orderDBManager.js";
 
 export default class OrderRepository {
-  async create(orderData) {
-    return await Order.create(orderData);
+  constructor() {
+    this.dao = new OrderDBManager();
   }
 
-  async getAll() {
-    return await Order.find().sort({ createdAt: -1 });
+  create(data) {
+    return this.dao.createOrder(data);
   }
 
-  async getById(id) {
-    return await Order.findById(id);
+  getAll() {
+    return this.dao.getOrders();
+  }
+
+  getById(id) {
+    return this.dao.getOrderById(id);
+  }
+
+  delete(id) {
+    return this.dao.deleteOrder(id);
+  }
+
+  find(filter, sort) {
+    return this.dao.findOrders(filter, sort);
+  }
+
+  findDuplicateRecentOrder(email, items, total) {
+    return this.dao.findDuplicateRecentOrder(email, items, total);
   }
 }

@@ -76,3 +76,7 @@ Para que el proyecto se logre realizar de una manera esperada utilicé las sigui
 | mail          |   String      |   e-mail      |
 | telephone     |   number      |Num de Telefono|
 | rol           |   String      | admin/user    |
+
+
+## Ver archivo STRUCTURE.md  para ver la estructura del proyecto.-
+
